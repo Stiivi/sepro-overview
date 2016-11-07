@@ -100,7 +100,7 @@ points in fixed pattern. One simulation step can be modelled by a single full
 scan of the whole screen. Once the beam touches a point on the screen, it does
 not go back within the same full screen scan:
 
-!["TV screen" scan](assets/evaluation-cartesian-scan.tiff)
+!["TV screen" scan](images/evaluation-cartesian-scan)
 
 The computation step can be described in a pseudo-language as:
 
@@ -118,7 +118,7 @@ objects matching actuator’s predicates:
 	FOR object IN selection S DO:
 	    apply actuator modifiers to object
 
-![Unary scan](assets/evaluation-unary-scan.tiff)
+![Unary scan](images/evaluation-unary-scan)
 
 The evaluation of combined actuator _A_ is a nested loop forming cartesian
 product between two selected sets of objects:
@@ -132,12 +132,12 @@ product between two selected sets of objects:
 	        IF l-object does not match actuator's "this" selector DO:
 	            CONTINUE with next L
 
-![Cartesian scan](assets/evaluation-cartesian-scan-2.tiff)
+![Cartesian scan](images/evaluation-cartesian-scan-2)
 
 The actuators are applied on the tuples from the cartesian product in the
 following order:
 
-![Evaluation tuples](assets/evaluation-tuples.tiff)
+![Evaluation tuples](images/evaluation-tuples)
 
 After application of object’s modifiers, we have to make sure that the
 outermost loop carrying the _l-object_ should still be considered in the
@@ -145,7 +145,7 @@ computation – whether it still matches the original predicate. If the
 _l-object_ does not match the predicate any more, we can not continue with the
 rest of the objects in the _R_ selection.
 
-![Skipped evaluation](assets/evaluation-skipped.tiff)
+![Skipped evaluation](images/evaluation-skipped)
 
 There is a limitation of this combined computation. Once the _l-object_ was
 considered for computation and was discarded, it is not brought back to the
@@ -194,7 +194,7 @@ to it’s whole consumption or abandonment. Any modifications happening on the
 original data source has no effect to the already running query. This is
 expected behaviour for the relational database use-case purposes.
 
-![Filtered selection](assets/evaluation-filter-selection.png)
+![Filtered selection](images/evaluation-filter-selection)
 
 Our model requires the dual behaviour: when we modify an object, the
 modification of the object has to be instantly reflected in the system and the

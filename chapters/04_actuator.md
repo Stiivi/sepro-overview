@@ -17,14 +17,14 @@ has form:
 
 	WHERE predicates ... DO modifiers ...
 
-![Unary actuator](assets/actuator-unary.tiff)
+![Unary actuator](images/actuator-unary)
 
 _Binary_ or rather _combined_ actuator applies modifiers on a cartesian product
 of two selected sets of objects. The binary actuator has form:
 
 	WHERE predicates ... ON predicates ... DO modifiers ...
 
-![Binary actuator](assets/actuator-binary.tiff)
+![Binary actuator](images/actuator-binary)
 
 
 ### Selector
@@ -39,7 +39,7 @@ predicates:
   specified then the root object only when it matches the predicates
 * list of _predicates_ – all objects which match the predicates
 
-![Selector types](assets/selector-types.tiff)
+![Selector types](images/selector-types)
 
 If multiple predicates are specified, then they are evaluated as aggregate of
 logical conjunction:
@@ -66,7 +66,7 @@ their evaluation to `true` is:
 * `BOUND`: slot is bound to an object, it is not empty
 * `UNBOUND`: slot is not bound to an object, is empty
 
-![Predicate types](assets/predicate-types.tiff)
+![Predicate types](images/predicate-types)
 
 Predicates are constant – their parameters are given by the model and there is
 no mechanism to change them from the computation itself. Predicates can be
@@ -78,20 +78,20 @@ Predicates can be _direct_ or _indirect_. Direct predicate is evaluated with
 the same object as the object being selected. For example if we are asking for
 objects with tag _open_ set, then all objects with tag _open_ set are selected:
 
-![Tag predicate](assets/predicate-tag.tiff)
+![Tag predicate](images/predicate-tag)
 
 
 Indirect predicate is applied to an object referenced through a slot in the
 evaluated object. Only one level of indirection is possible.
 
-![Indirect predicate](assets/predicate-indirect.tiff)
+![Indirect predicate](images/predicate-indirect)
 
 This is useful when we want to select objects that are bound to objects with
 certain properties. For example “all people owning an apple” or “all molecules
 attached to a nucleotide adenine”. Objects which don’t have the slot or their
 slot is empty are not evaluated.
 
-![Indirect predicate with empty slot](assets/predicate-indirect-empty.tiff)
+![Indirect predicate with empty slot](images/predicate-indirect-empty)
 
 #### Predicates for Tags
 
@@ -166,7 +166,7 @@ left part of the combined selector. `OTHER` refers to an object selected by the
 right part of the combined selector and it can not be used in the unary
 selector. `ROOT` always refers to the singleton root object.
 
-![Target of modifiers](assets/modifiers-matrix.tiff)
+![Target of modifiers](images/modifiers-matrix)
 
 Note: we chose the words `THIS` and `OTHER` over the `LEFT` and `RIGHT` or
 `PRIMARY` and `SECONDARY` to minimise possible keyword conflict with potential

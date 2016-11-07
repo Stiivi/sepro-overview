@@ -20,7 +20,7 @@ Concepts:
 
 The concepts are visualised in the following image:
 
-![Concepts](assets/example-linker_objects.tiff)
+![Concepts](images/example-linker_objects)
 
 Predicates:
 
@@ -78,4 +78,4 @@ The order of the actuators does not really matter in this example. Each time we 
 The result of the computation is depicted in the next image where all the
 simulation steps are visualised.
 
-![Result](assets/example-result.tiff)
+![Result](images/example-result)

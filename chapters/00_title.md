@@ -45,8 +45,8 @@ and add the centred logo
     \end{center}
 \end{titlepage}
 
-\pagenumbering{gobble}
-
+\hypersetup{linkcolor=black}
+\setcounter{tocdepth}{2}
 \tableofcontents
 
 \newpage

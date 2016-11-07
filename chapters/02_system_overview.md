@@ -1,8 +1,9 @@
 # System Overview
 
-The main components of the system and it’s external context are: computation engine, object store, controller and logger-observer:
+The main components of the system and it’s external context are: computation
+engine, object store, controller and logger-observer:
 
-![Description](assets/DraggedImage.tiff)
+![Engine and related components](images/system-engine)
 
 ## Engine
 
@@ -19,7 +20,8 @@ The common tasks that an engine performs are:
 * Instantiate objects from the model concepts.
 * Instantiate objects from concepts by request.
 * Run a single or several iteration steps.
-* Measure the computation state and forward it for storage or visualisation to a _logger_.
+* Measure the computation state and forward it for storage or visualisation to
+  a _logger_.
 * Handle and optionally forward the control actions.
 
 Engine uses _store_ as an object container. The store is responsible for:
@@ -31,9 +33,20 @@ Engine uses _store_ as an object container. The store is responsible for:
 
 ## Controller
 
-Controller is an external entity that controls the engine. It might be an application which direct purpose is the computation or it might be a system where the computation engine serves just as an opaque subsystem. In the first of the depicted example cases the existence of the engine is exposed to the human user and the application through which the user interacts with the engine is a rich extension of the engine that we would call _virtual laboratory_. In the virtual laboratory the human user is active part of the system. In the second example case the user interacts with an application which uses the engine to perform computations which just provide results for other goals of the client application. In this case the existence of the engine is hidden from the user and user is indirect user of the engine. We call this case simply _application_.
+Controller is an external entity that controls the engine. It might be an
+application which direct purpose is the computation or it might be a system
+where the computation engine serves just as an opaque subsystem. In the first
+of the depicted example cases the existence of the engine is exposed to the
+human user and the application through which the user interacts with the engine
+is a rich extension of the engine that we would call _virtual laboratory_. In
+the virtual laboratory the human user is active part of the system. In the
+second example case the user interacts with an application which uses the
+engine to perform computations which just provide results for other goals of
+the client application. In this case the existence of the engine is hidden from
+the user and user is indirect user of the engine. We call this case simply
+_application_.
 
-![](assets/DraggedImage-1.tiff)
+![Examples of system integration](images/system-uses)
 
 We will call _computation controller_ a program or a person using such program
 that can initiate change of the computation state independently of the internal
@@ -69,4 +82,4 @@ observed value thresholds. This can be used to automate more sophisticated
 experiments by applying a rule-based experiment protocol. The setting is
 depicted in the following image:
 
-![](assets/DraggedImage-2.tiff)
+![Automated decisioning](images/system-automated)

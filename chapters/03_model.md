@@ -23,14 +23,14 @@ represented by given number of _counters_ and potential relationships of given
 number, which are named _slots_. Here is a visual representation of a concept
 with mentioned properties:
 
-![Object](assets/object.tiff)
+![Object](images/object)
 
 Concrete instances of concepts are _objects_ – they form the composition of the
 simulated world. Concept describes initial state of an object and it’s static
 structure. Concepts can be though as recipes for object instantiation. The
 object data structure is depicted in the following image:
 
-![Object properties](assets/properties.png)
+![Object properties](images/properties)
 
 Examples of concepts:
 
@@ -93,7 +93,7 @@ In the early implementation, there is no distinction between symbols, they are t
 _Tags_ represent qualitative properties of a concept. 
 The _tag_ _t_ represents atom being in a state _t_ (free, closed, consumed, …), having quality _t_ (white, small, fast, …), being of a class _t_ (connector, nucleotide, person, …), etc.
 
-![Object tags](assets/object-tags.tiff)
+![Object tags](images/object-tags)
 
 If there is conceptual relationship between the tags, for example negation
 between _open_ and _closed_, the relationship has no model representation and
@@ -136,7 +136,7 @@ number of instances of countable quality associated with the object. A counter
 can be imagined as a container able to hold multiple copies of the same tag.
 The only difference is that the _counter_ is a static property of an object.
 
-![Object counters](assets/object-counters.tiff)
+![Object counters](images/object-counters)
 
 Counters, being static properties can not be dis-associated from neither
 associated with an object during run time. At least not in this early
@@ -153,7 +153,7 @@ object owning the slot is called _source_ and the referenced object is called
 _target_. The referenced object has no explicit knowledge about being
 referenced.
 
-![Object slots](assets/object-slots.tiff)
+![Object slots](images/object-slots)
 
 Potentially any object can be bound to a slot. Which object might be targets
 for given slots can be inferred from the model.
@@ -184,7 +184,7 @@ within the structure and interface towards the outside of the structure.
 
 Examples of primitive structures:
 
-![Primitive structures](assets/structures.tiff)
+![Primitive structures](images/structures)
 
 The structure has a form:
 
@@ -257,7 +257,7 @@ Here is an example of a 4-object cycle structure where the “east” object is 
 target object and it has two slots exposed: “west” and “south”. The structure
 acts in the model as an object with two slots:
 
-![Encapsulated structure](assets/structures-group.tiff)
+![Encapsulated structure](images/structures-group)
 
 #### Limits of Structural Recursion
 
