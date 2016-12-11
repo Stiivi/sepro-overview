@@ -42,7 +42,28 @@ and extend the pool of global named objects. The practice of extensive set of
 predicates testing in root object’s slots (`WHERE ROOT IN slot ...`) is highly
 discouraged.
 
-## Concept Development Notes
+Instantiation
+
+: In current implementation there is no other way to add or remove objects to
+the simulation from within the simulation. Objects can not initiate creation or
+removal of other objects. This constraint requires further research.
+
+## Object Development Notes
+
+
+Concepts
+
+:   Another, yet unreliable way of inferring concepts is to look at the static
+properties if there is no ambiguity between concept properties at the model
+level (same fixed properties) and from space of behavioural side effects (which
+might be too complex). If two original concepts have the same properties, for
+example counter _count_ and no slots, then we can’t tell which object
+represents which concept if the original concept tag is not preserved.
+
+    Concept reflection can be implemented as a property of the model by
+assuring that there are no rules in the model that would induce removal of the
+concept tag. Higher level applications might have validation, user-oriented
+inputs and visualisation for this feature.
 
 Slots
 
@@ -54,7 +75,7 @@ Static Slots
 
 : In the current implementation, every concept and therefore it’s instances –
 objects – have static number of slots. Possibility of having dynamic number of
-slots requires further research of modelling necessity and computation
+slots requires further research of modelling necessity and simulation
 complexity.
 
 Namespaces
@@ -86,7 +107,7 @@ Future of tags
 Counter Bounds
 
 : Potentially the counters might have an upper bound or be cyclic. More
-research of such property in the nature  and it’s impact on computation
+research of such property in the nature  and it’s impact on simulation
 complexity is needed.
 
 
@@ -131,7 +152,7 @@ Multiple Modifiers on Same Parameter
 multiple modifiers to operate on the same parameter, such as setting/unsetting
 the same tag, increasing/decreasing or zeroing the same counter, binding two
 different objects on the same slot. Result of such action is currently
-undefined and it is computation engine specific.In the future this situation
+undefined and it is simulation engine specific.In the future this situation
 might be disallowed in a way that such model would not be considered valid.
 
 

@@ -16,7 +16,22 @@ interactions.
 
 ## Counters
 
-Counters were quantitative properties of objects.
+_Counters_ were quantitative properties of a concept. The quantity stored is a
+number of instances of countable quality associated with the object. A counter
+can be imagined as a container able to hold multiple copies of the same tag.
+The only difference is that the _counter_ is a static property of an object.
 
-...
+![Object counters](images/object-counters)
+
+Counters, being static properties can not be dis-associated from neither
+associated with an object during run time. At least not in this early
+implementation. Impact of this feature requires more research.
+
+Counters can be changed by incrementing or decrementing their values. Counters
+can be cleared to be zero and they can be tested whether they are zero.
+
+Counters were temporarily rejected because they can be partially implemented
+through existing mechanisms. Whether counters should remain in the model or not
+is still open for dicsussion and more research is needed.
+
 

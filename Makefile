@@ -5,11 +5,11 @@
 #
 SRC = 00_title.md \
 	  01_introduction.md \
-	  02_system_overview.md \
 	  03_model.md \
 	  04_actuator.md \
-	  05_computation.md \
+	  05_simulation.md \
 	  06_probes.md \
+	  02_system_overview.md \
 	  07_example.md \
 	  08_development_notes.md \
 	  09_future.md \
@@ -22,7 +22,6 @@ PANDOC = pandoc
 IFORMAT = markdown
 MATHJAX = "http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"
 FLAGS = --standalone \
-		--mathjax=$(MATHJAX) \
 		--highlight-style pygments
 STYLE = css/style.css
 TEMPLATE_HTML = template.html
@@ -32,6 +31,7 @@ HTML_FLAGS = --toc \
 			 --toc-depth=2 \
 			 --default-image-extension=png \
 			 --template="$(STYLE_DIR)/template.html" \
+			 --mathjax=$(MATHJAX) \
 			 -c "css/style.css"
 PDF_FLAGS = --default-image-extension=pdf \
 			--latex-engine=xelatex \
@@ -91,7 +91,7 @@ pdf: $(FILTER) dirs
 	$(PANDOC) -f $(IFORMAT) $(PDF_FLAGS) -o $(OUTPUT_DIR)/$(TARGET_NAME).pdf $(ALL_SRC)
 
 epub: $(FILTER) dirs
-	$(PANDOC) -f $(IFORMAT) $(FLAGS) -o $(OUTPUT_DIR)/$(TARGET_NAME).epub $(ALL_SRC)
+	$(PANDOC) -f $(IFORMAT) -t epub3 $(FLAGS) -o $(OUTPUT_DIR)/$(TARGET_NAME).epub $(ALL_SRC)
 
 top: $(FILTER)
 	$(PANDOC) -c $(STYLE) --filter ${FILTER} --template $(TEMPLATE_HTML) -s -f $(IFORMAT) -t html $(FLAGS) -o tutorial.html index.md
