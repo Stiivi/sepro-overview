@@ -48,6 +48,13 @@ Instantiation
 the simulation from within the simulation. Objects can not initiate creation or
 removal of other objects. This constraint requires further research.
 
+Selector
+
+: The _selector_ was originally called _receptor_, since it was inspired by
+cell receptors. However to prevent confusion and concept name conflict in
+modelling biological systems, we decided to reject the original name
+_receptor_ and let the modeller decide where to use the term.
+
 ## Object Development Notes
 
 

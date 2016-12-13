@@ -1,4 +1,7 @@
-# Future
+# Areas for Further Investigation
+
+The system and method described in this paper is just a start, much remains to
+be done.
 
 This chapter lists opportunities for further development of the system.
 

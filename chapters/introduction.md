@@ -15,7 +15,7 @@ should serve to model, understand, solve, and convey knowledge about
 domain-specific problems of dynamical complex systems.
 
 Our goal is to be able to describe the problem by collection of seemingly
-unrelated observed _state change primitives_ which we call _actuators_. They
+unrelated state change elements which we call _actuators_. They
 are simplifications of observed events and observed circumstances of the
 events. Examples of over-simplified observations that are similar to a
 text-book like descriptions of the events:

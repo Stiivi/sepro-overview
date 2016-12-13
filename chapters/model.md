@@ -10,17 +10,8 @@ will describe the objects and actuators later in more detail.
 Before we explain the components of the simulated universe, we need to
 introduce a _symbol_: a sequence of characters and is used as a label of
 entities or their properties. Everything that can be referred to by a name has
-a symbol associated with it.
-
-State of the simulated environment:
-
-$$S=(G,A)$$
-
-Where G is edge labelled directed graph of objects:
-
-$$G=(O,B)$$
-
-Where $O$ are objects (vertices) and $E$ are bindings (edges). 
+a symbol associated with it. $Y$ is a set of symbols in the simulated
+universe.
 
 ## Objects
 
@@ -42,38 +33,27 @@ fixed set of _slots_ that is predetermined at the moment of object's
 instantiation.
 
 [^1]: Even-though the system is inspired by bio-chemical processes, we try to
-avoid the terminology specific to the said domain for multiple reasons. First,
-the concepts are more abstract and we want to allow the modeller to assign
-model-specific meaning. For example a _cell receptor_ can be represented by
-either a tag when considering it’s existence for potential action, or as a slot
-if binding to the receptor is relevant. Similarly we might have used the term
-_sites_ as in _binding sites_ for the _slots_, however the _site_
-representation might differ based on the modelling objectives.
+  avoid the terminology specific to the said domain for multiple reasons.
+  First, the concepts are more abstract and we want to allow the modeller to
+  assign model-specific meaning. For example a _cell receptor_ can be
+  represented by either a tag when considering it’s existence for potential
+  action, or as a slot if binding to the receptor is relevant. Similarly we
+  might have used the term _sites_ as in _binding sites_ for the _slots_,
+  however the _site_ representation might differ based on the modelling
+  objectives.
 
 ![Object](images/object)
 
-### Concepts
+Now we can start defining the state of the simulated environment. For now we
+ommit other components of he state and we get the following:
 
-Objects are instantiated from object prototypes or templates called _concepts_.
-The _concepts_ describe initial state of an object as well as fixed properties
-of the objects which can not be changed later during the simulation. The fixed
-properties can be thought as a domain model constraints. Concepts can be though
-as recipes for object instantiation.
+$$S=(G,\ldots)$$
 
-Examples of concepts in the modelling language:
+Where G is edge labelled directed graph of objects:
 
-	CONCEPT cell
-	CONCEPT person
-	CONCEPT box
+$$G=(O,B)$$
 
-Association of concept to an object might not be present once the object is
-instantiated. Unlike classes from dynamic object oriented programming
-languages, concept identity can not be reflected directly from the object
-instances. Under standard circumstances, the concept identity might be assigned
-as a special _tag_ which represents the originating concept. However, this tag
-has no different treatment in the simulation than any other tag. It is not
-guaranteed not to be dis-associated with the owning object. See more
-information in the discussion about tags.
+Where $O$ are objects (vertices) and $E$ are bindings (edges). 
 
 ### Tags
 
@@ -83,15 +63,11 @@ If we say an object has a tag $t$ we mean that the object is in a state $t$
 has quality $t$ (fast, white, small) or being of a class $t$ (nucleotide,
 person, link), etc.
 
+Set of symbols that represent tags in the simulated universe is
+$Y^t\in Y$.
+
+
 ![Object tags](images/object-tags)
-
-At this level there are no restrictions on the number of tags an object might
-have assigned.  As we will see later, tags can be attached (set) to and removed
-(unset) from objects.
-
-If there is conceptual relationship between the tags, for example negation
-between _open_ and _closed_, the relationship has no model representation in
-current design and remains only within the creator’s domain of understanding.
 
 Presence of a tag $t$ means the object has the quality represented by the tag
 $t$. The absence of the tag $t$ means that the object does not have the
@@ -102,158 +78,394 @@ represented as an array of boolean values in the objects. This quality
 representation would always carry the information about possible flags and we
 would not be able to change it.
 
-Meaning of a tag is up to the creator. For example if we had a tag “closed”,
-objects without the tag does not necessarily have to be considered “open”.
+There are no restrictions on the number of tags an object might have assigned.
+As we will see later, tags can be attached (set) to and removed (unset) from
+objects.
 
-Examples of tags:
+A conceptual meaning of a tag is up to the creator. For example if we had a tag
+“closed”, objects without the tag does not necessarily have to be considered
+“open”. Relationship between the tags, for example negation between _open_ and
+_closed_, has no model equivalet in the current design and implementation of
+the system. The connection remains only within the creator’s domain of
+understanding.
 
-	TAG free
-	TAG nucleotide
-	TAG hungry, tired  
+Tags can be associated or removed from an object. When we associate a tag with
+an object we say that we _set_ the tag. When we remove a tag from an object we
+say that we _unset_ the tag. By unsetting a tag, we remove any information
+gabout association of the tag with the object.
 
-Tags can be implemented either as a dynamic set of symbols or as a binary
-vector. If implemented as a binary vector, the size of the vector is virtually
-equal to the number of tag symbols in the system since any of known tags can be
-potentially assigned to any object. Shortening and annotation of such vector
-for memory optimisation purposes should not have any effect on the simulation
-itself and should not provide any information contained in the annotation to
-the simulation.
-
-Tags can be _set_ or _unset_. By setting a tag we associate the tag with an
-object. By unsetting a tag, we remove any information about association of the
-tag with the object.
+We will use $\hat{t}$ to denote a set of tags associated with an object or used
+anywhere where tags to be associated or removed are considered.
 
 ### Slots
 
-_Slots_ represent possible one-way relationships that the objects of the
-concept can have with other objects. If there is a bond for a slot, then the
-object owning the slot is called _source_ and the referenced object is called
-_target_. The referenced object has no explicit knowledge about being
-referenced.
+_Slots_ are constraints[^2] and they represent possible directed relationships
+that objects can have with other objects. If there is a bond for a slot, then
+the object owning the slot is called _origin_ and might become an initial node
+of an edge in the object graph. An object that is being referenced is called
+_target_ and becomes a terminal node in the objectgraph.
+
+[^2]: In current design and implementation of the system the slots are special
+  kind of constraints that we call _static level 0 constraints_. Once object is
+  instantiated, slots can not be changed. This is preliminary design decision
+  and limitation that might change in the future. By _level 0_ we mean that the
+  constraints are part of the lowest model primitives and to distinguish them
+  from constraints that will be introduced at higher levels.
+
+In the system the referenced object has no explicit knowledge about being
+referenced. There is no functionality besides observation that would allow
+state change of a referenced object when only the referenced object is being
+cosidered.
 
 ![Object slots](images/object-slots)
 
-Potentially any object can be bound to a slot. Which object might be targets
-for given slots can be inferred from the model.
+Potentially any object can be bound to a slot. Which object might become a
+target for given slots can be inferred from the model. For more information see
+section about actuators.
 
-Slots are similar to object references in Smalltalk.
+If we can compare slots to similar concepts from other systems or programming
+languages, they are similar to object references in Smalltalk or rather
+[Self](http://www.selflanguage.org) programming language.
 
-### Representation
+### Object State
 
-Every object’s state is defined by it’s properties: _tags_ and _counters_: 
+Every object’s state is defined by it’s properties _tags_ and _slots_: 
+
+$$ o=(\hat{t} ,\hat{s}) $$
+
+Where $\hat{t}\in Y^t$ and $\hat{s}\in Y^s$.
+
+Now we can say, that the object graph can have an edge with label $s$
+between objects $o_o$ and $o_t$ only when the object $o_o$ has slot $s$.
 
 
-$$ o=(\overline{t} ,\overline{c}) $$
+## Actuator
 
-The _tags_ can be represented either as a vector of booleans with the same size
-as number of tag symbols in the whole model or as a set.
+Dynamical behaviour of the system is described by state change elements we call
+_actuators_. Actuators modify the state of an object when actuator's condition
+based on state of object's context is met. We assume that all actuators operate
+on all objects at once.[^3]
+
+[^3]: This is idealized assumption which has technical implementation
+  limitations that we will discuss later. This assumption also only applies to
+  this level of model abstraction.
+
+In the system we can describe two kinds of state changes: simple state changes
+– an object meeting a condition changes it's state regardless of other objects,
+and a state changes based on reaction of two objects. The actuator acting in
+the first, simple case, is called _unary_ or _simple_ actuator and the actuator
+acting in the second, reactive case, is called _binary_ or _reactive_ actuator.
+
+Now we see that actuator has two core properties: a condition that selects
+which objects from the simulation are to be considered for modification and the
+modification itself. We are going to call the condition a _selector_ and we
+will represent it by the letter $\sigma$. We call the part of actuator that
+modifies an object a _modifier_ and we will represent it by the letter $\mu$.
+
+Since one of our goals of the system is it's observability, we propose one more
+property of an actuator: _control signal_. It is an action that is triggered at
+the same time when the actuator is activated and signals a message to the
+simulation environment. It has no direct effect on the state of the simulation
+and can be thought as an action to communicate unidirectionally with the
+observer.
+
+Now we can define the _actuator_:
+
+$$\alpha=(\sigma,\hat{\mu},\hat{\kappa})$$
+
+The unary actuator can be imagined as a filter that filters all objects
+one-by-one and applies a modification on those filtered through:
+
+![Unary actuator](images/actuator-unary)
+
+_Binary_ or _reactive_ actuator acts on two filtered objects that can be though
+as "reacting" objects:
+
+![Binary actuator](images/actuator-binary)
 
 
-## World
+## Selector
 
-World defines initial collection of objects in the simulation, their state and
-relationships. The _world_ can be though as an oriented graph structure.
+Selector is a function that determines which objects are “selected” or
+considered for a modification: either all objects in the simulation or objects
+matching a list of _predicates_.
 
-### Structure
+$$
+\sigma=\begin{cases}
+\sigma_\text{ALL}=\text{true} & \text{all objects}\\
+\sigma_\pi & \text{objects matching predicates}\\
+\end{cases}
+$$
 
-Structure defines a simple group of object in form of a graph. The structure
-contains list of concepts to be instantiated within the structure, bindings
-within the structure and interface towards the outside of the structure.
+$$\sigma_\text{ALL} = \forall{o}$$
+$$\sigma_\pi = \displaystyle\bigwedge_i \pi_i\\$$
 
-Examples of primitive structures:
+## FIXME: Continue here
 
-![Primitive structures](images/structures)
+If multiple predicates are specified, then they are evaluated as aggregate of
+logical conjunction:
 
-The structure has a form:
+$$ p=\bigwedge _{ i }^{ \quad  }{ { p }_{ i } }  $$
 
-	STRUCT name
-	    ... structure contents ...
+Due to the “minimal assumptions and mechanisms” principle, the system does not
+provide extensive logic expressions, only aggregated conjunction. For example,
+to implement behaviour that would be equivalent to logical disjunction of the
+predicates one has to explicitly list separate selectors.
 
-The contents is mostly instance specification, for example: `OBJECT receptor`
-will result in one instance of concept `receptor`, `OBJECT link, link, link`
-will result in three instances of a concept `link`. If we want many instances
-of a single concept we can specify that as:
+## Predicate
 
-`OBJECT` _concept_ `*` _count_
+Predicate is a function that determines whether an object should be included in
+the selection.
 
-As in `OBJECT link * 100` to get 100 instances of the concept `link`.
+TODO: $\pi:O,[O]\rightarrow \text{bool}$
 
-If we want to refer to the instances within the structure, for example to crate
-a binding with that instance, we might give it a name alias:
+Predicate defines a condition and relative context of the condition that is
+applied for object selection filter during evaluation. The predicate might
+test state of tags or bindings. The list of possible predicates and
+their evaluation to `true` is:
 
-	OBJECT link AS head, link AS middle, link AS tail
+* `SET` _tags_
+* `UNSET` _tags_
+* `BOUND`: slot is bound to an object, it is not empty
+* `UNBOUND`: slot is not bound to an object, is empty
 
-By default alias of an object will be the same as the concept name. If there
-are multiple instances of the same concept without and explicit alias, then the
-reference is undefined.
+![Predicate types](images/predicate-types)
 
-#### Bindings
+Predicates are constant – their parameters are given by the model and there is
+no mechanism to change them from the simulation itself. Predicates can be
+changed only by the simulation controller.
 
-Bindings within the structure can be created between uniquely named objects.
-The binding definition is very similar to the `BIND` modifier:
+### Direct vs. Indirect
 
-`BIND` _source_`.`_slot_ `TO` _target_
+Predicates can be _direct_ or _indirect_. Direct predicate is evaluated with
+the same object as the object being selected. For example if we are asking for
+objects with tag _open_ set, then all objects with tag _open_ set are selected:
 
-For example:
+![Tag predicate](images/predicate-tag)
 
-	BIND head.next TO middle
-	BIND middle.next TO tail
 
-Two of the structures depicted above can be defined for example as follows:
+Indirect predicate is applied to an object referenced through a slot in the
+evaluated object. Only one level of indirection is possible.
 
-	STRUCT triplet
-	   OBJECT atom AS left, OBJECT atom AS right
-	   OBJECT large_atom
-	   BIND large_atom.left TO left
-	   BIND large_atom TO right
-	
-	STRUCT chain
-	   OBJECT head
-	   OBJECT link AS l1, link AS l2
-	   OBJECT tail
-	   BIND head.next TO l1
-	   BIND l1.next TO l2
-	   BIND l2.next TO tail
+![Indirect predicate](images/predicate-indirect)
 
-The other structures are constructed in a similar way.
+This is useful when we want to select objects that are bound to objects with
+certain properties. For example “all people owning an apple” or “all molecules
+attached to a nucleotide adenine”. Objects which don’t have the slot or their
+slot is empty are not evaluated.
 
-To be able to bind structures with other objects or other structures, we need
-to specify where the external bindings are connected to the internal parts of
-the structure or how the internal parts of the structure connects to the
-external objects.
+![Indirect predicate with empty slot](images/predicate-indirect-empty)
 
-The whole structure is represented by one object called _target_. Whenever we
-`BIND` to the structure the target end of the binding is the object marked as
-_target_. This explicit representation exists only in the model and disappears
-after structure is instantiated.
+### Predicates for Tags
 
-Similarly when we model an instance of a structure and bind the structure to
-other objects, we actually bind slots of objects inside of the structure. Slots
-which can be bound can be exposed as structure’s _slots_.
+Object’s tags can be tested using `SET` and `UNSET` predicates. If we consider
+predicate tags _Tp_ and tags of tested object _To_, them the predicate
+evaluates to true if:
 
-Here is an example of a 4-object cycle structure where the “east” object is the
-target object and it has two slots exposed: “west” and “south”. The structure
-acts in the model as an object with two slots:
+`SET` _Tp_: _Tp_ ⊆ _To_
 
-![Encapsulated structure](images/structures-group)
+`UNSET` _Tp_: _Tp_ ∩ _To_ = ∅
 
-#### Limits of Structural Recursion
+In the model definition language, the keyword `SET` is omitted and only the
+tags are listed.
 
-The _world_ container can be composed of objects and structures, therefore it
-creates two-level structural hierarchy. Model structures can be composed only
-of objects, recursive nesting of structures is not yet permitted (see the
-development notes for reasoning).
+Example:
 
-In the prototype implementation we don’t allow recursive definition structures
-– that means that use of other structures as structure elements is not
-possible. Even though this restriction might be changed in the future,
-introduction of recursion should respect potential negative impact on the
-engine implementation.
+	WHERE free DO ...
+	WHERE UNSET ready DO ...
 
-### Root
+### Predicates for Bindings
 
-There might be situations where we need to consider a global state in a
-simulation. For that purpose there is one special object that we call _root_.
-It is the only object that can be explicitly globally referenced. Every
-simulation has a root object, event-though it might be unused. Default root
-object is empty, has no properties and no slots.
+Bindings or relationships can be tested for their actual existence. The two
+binding-related predicates are `BOUND` and `UNBOUND`.
+
+`BOUND` _slot_: is true if the object’s _slot_ is bound to an object.
+
+`UNBOUND` _slot_: is true if the object’s _slot_ is empty, not bound to any object
+
+The binding predicates don’t test for any other information of the object being
+referenced. The slot might even refer to the object itself.
+
+## Modifiers
+
+Modifiers change state of objects. There are three kinds of modifiers: tag
+modifiers or binding modifiers.
+
+The modifiers usually operate on the objects selected by the selectors.  Which
+object the modifier applies on is referred to as _current_. The _current_
+object can be `THIS` or `OTHER`. `THIS` refers to an object selected by the
+unary selector or by the left part of the combined selector. `OTHER` refers to
+an object selected by the right part of the combined selector and it can not be
+used in the unary selector.
+
+![Target of modifiers](images/modifiers-matrix)
+
+Note: we chose the words `THIS` and `OTHER` over the `LEFT` and `RIGHT` or
+`PRIMARY` and `SECONDARY` to minimise possible keyword conflict with potential
+common symbol name. It is more common to have object properties that are “on
+the _left_ or _right_ side” of an object or have a “_primary_ binding site”.
+
+If not specified otherwise the modifiers apply to the objects selected by the
+_this_ selector. To make other object be current for a modifier we use `IN`
+specifier:
+
+	IN THIS modifier ...
+	IN OTHER modifier ...
+
+### Tag Modifiers
+
+Tags can be set or unset. When tags are _set_, then the object’s tags after the
+change is intersection of it’s tags before the change and the modifier’s tags.
+Setting a tag can be though as assigning a quality to an object. Let us
+consider tags of object being modified as _To_ and modifier’s tags _Tm_, tags
+of an object after change are _Tc_:
+
+`SET` _tags_: _Tc_ = _To_ ∪ _Tm_
+
+Examples of tag set modifiers:
+
+	SET open
+	SET excited
+	SET running, exhausted
+
+Un-setting a set of tags results in object’s tags to not contain qualities
+represented by the modifier’s tags:
+
+`UNSET` _tags_: _Tc_ = _To_ − _Tm_
+
+Examples of tag unset modifiers:
+
+	UNSET ready
+	UNSET available
+	UNSET alive
+
+### Binding Modifiers
+
+An actuator can form and break relationships between objects, and thus alter
+the object graph, with the two types of _binding_ modifiers:
+
+`BIND` _source_ `TO` _target_: Create a binding that originates in the _source_
+slot of the source object and points to the _target_ object. This is a graph
+edge creation modifier.
+
+`UNBIND` _source_: Make the _source_ slot to have no target reference
+associated with it. This is a graph edge deletion modifier.
+
+In _unary_ actuators the object that can be referenced in the binding are
+either objects already referenced by another slot of the same object. Example:
+
+	BIND left TO righ
+	BIND operand_site TO next
+
+In _combining_ actuators, the object that can be referenced are the same
+objects as in the unary actuator, referenced as _this_, plus objects evaluated
+by the second selector referenced as _other_:
+
+	BIND head TO OTHER
+	BIND active_site TO OTHER.next
+	IN OTHER BIND site TO THIS
+
+In the prototype implementation and action of binding to a slot that is already
+bound results in change of the slot’s reference. Unbinding a slot that is not
+bound results in no action. See developer notes for discussion about possible
+change in this behaviour.
+
+## Control Signalling
+
+Control signalling is important part of the simulation. It allows the observer
+to observe special or interesting events, register them or react on them. The
+observer does not have to be necessarily a person, it might be another
+automated system. No control signal has and should never have direct effect on
+the state of the simulation.
+
+We propose three kinds of signals:
+
+* _notify_ – send a notification message to the controller without interruption
+* _trap_ – interrupt the simulation and send a notification message
+* _halt_ – stop the simulation without expectation of it being resumed
+
+
+The _notify_ signal is asynchronous and is usually handled by a logging
+component. One might use the _notify_ signal when certain simulation goal is
+reached, for example if an expected reaction occurs. Notification payload
+contains set of symbols that describe the event. Modeller can use them to
+distinguish between different situations that occurred. Notifications can’t be
+anonymous, therefore at least one symbol should be present in the payload.
+
+It is important to note that the notifications don’t interrupt the simulation
+and notification handlers must not alter the state of the simulation.
+
+The _trap_ signal sends a message to the observer which must interrupt the
+simulation and hand control to the simulation controller. It is described in a
+similar way as the notification by a set of symbols. Traps are used to point
+out important events in the simulation that require attention of the observer
+or require the observer to act based on the trap signal. Human observers might
+enter an interactive session after a trap – which might alter the simulation
+state.
+
+After interruption by a _trap_ signal, simulation can be resumed. The state of
+the simulation might be modified by an external entity.
+
+The last type of signal is _halt_ and signals to the observer that the
+simulation is to be permanently interrupted. It is usually used when a state
+occurs that makes no sense from the modelled problem perspective and any
+farther continuation of the simulation would result in propagation of the
+erroneous state therefore introducing more nonsensical inconsistencies.
+
+After executing the _halt_ action, the simulation state is marked as _halted_.
+It is up to the controller to resolve the halt event and either disallow
+continuation of the simulation completely or clear the _halted_ state and allow
+the simulation to be resumed. The later is not recommended.
+
+
+## Open Questions about Concept Instances
+
+The following section discusses creation and alteration of concept instances.
+How the actions are implemented and what they actually mean is not yet
+specified, however we ask few questions and hint towards potential direction
+for solution. Concept instance dynamics is part of the system’s essentials and
+therefore must be specified sooner or later.
+
+### Creation and Deletion
+
+One of the open questions is whether concept instances might be created and
+deleted by the actuators during the simulation time or not? In the prototype
+implementation we don’t allow concepts to be created by the actuators, but we
+don’t prevent controllers to inject to or delete objects from the system.
+Implication of such action is currently undefined.
+
+There are few reasons why this question has not been answered yet. One is lack
+of proper rationalisation and explanation of the existence alteration actions.
+Other is missing rules governing the potential change of existence and last but
+not least is simulation complexity of such actions.
+
+If we want to introduce instance creation as a kind of graph  modification, we
+need to understand the following:
+
+* What does it mean that an object is created?
+* What does it mean when an object is deleted?
+* Is the system’s collection of objects finite or infinite?
+
+
+### Mutation and Structural Alteration
+
+In the prototype implementation the objects, once instantiated, can’t be
+modified structurally. That means that the number and labelling of slots
+can’t be changed neither from the inside neither from the outside of
+the simulation. The only way to do the change is to do it manually or by
+automation at the controller level through performing a object-level surgery
+which involves creation of a new concept with new structure, instantiation of
+the new concept, deletion of the existing object and rewiring the bindings.
+This is very tedious operation with unspecified consequences. Moreover, the
+operation might be disallowed on certain kinds of execution engines and object
+stores which pre-allocate fixed-width structures based on the original concept
+model prior to the simulation.
+
+To be able to perform alteration of object structure, we need to answer or
+understand the following:
+
+* Can objects be altered individually or as a whole set through common concept
+  as their template? Note that the connection between the object and the
+  concept is currently lost – see the section about concept reflection.
+* What is the impact of the structure change in the conceptual model to the
+  simulation engine and object store implementation?

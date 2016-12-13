@@ -4,17 +4,18 @@
 # SRC = $(wildcard *.md)
 #
 SRC = 00_title.md \
-	  01_introduction.md \
-	  03_model.md \
-	  04_actuator.md \
-	  05_simulation.md \
-	  06_probes.md \
-	  02_system_overview.md \
-	  07_example.md \
-	  08_development_notes.md \
-	  09_future.md \
-	  101_grammar.md \
-	  102_rejected_or_postponed_ideas.md
+	  introduction.md \
+	  model.md \
+	  simulation.md \
+	  language.md \
+	  probes.md \
+	  system_overview.md \
+	  example.md \
+	  development_notes.md \
+	  future.md \
+	  notation.md \
+	  appendix_grammar.md \
+	  appendix_rejected_or_postponed_ideas.md
 
 
 TARGET_NAME = Sepro
